@@ -3,7 +3,7 @@
 //
 
 #include "LedService.h"
-#include <string.h>
+#include <cstring>
 #include "driver/rmt_tx.h"
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
@@ -48,7 +48,7 @@ void LedService::startLoop() {
 
     uint8_t delayMS = 10;
 
-    while (1) {
+    while (true) {
         for (int i = 0; i < 3; i++) {
             for (int j = i; j < LED_COUNT; j += 3) {
                 // Build RGB pixels
