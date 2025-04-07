@@ -15,11 +15,16 @@ extern "C" void app_main(void) {
 
     JTAGService jtagService;
     jtagService.init();
-    jtagService.println("\nWelcome to led-com");
+    jtagService.println("\r\nWelcome to led-com");
     jtagService.println("https://github.com/s256v/led-com");
-    jtagService.waitFor("AT+RGB=");
 
     LedService ledService;
     ledService.init();
-    ledService.startLoop();
+    ledService.splash();
+
+    while (true) {
+        jtagService.waitFor("AT+RGB=");
+        jtagService.readBytes(ledService.getRgbBuffer(), ledService.getRgbBufferSize());
+        ledService.refresh();
+    }
 }

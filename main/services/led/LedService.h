@@ -15,12 +15,15 @@
 class LedService {
 public:
     void init();
-    void startLoop();
+    void splash();
+    char* getRgbBuffer();
+    size_t getRgbBufferSize();
+    void refresh();
 private:
     rmt_channel_handle_t led_chan = nullptr;
     rmt_encoder_handle_t led_encoder = nullptr;
     rmt_transmit_config_t tx_config;
-    uint8_t* led_strip_pixels;
+    char* led_strip_pixels;
 };
 
 
