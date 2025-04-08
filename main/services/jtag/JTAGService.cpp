@@ -36,11 +36,28 @@ void JTAGService::println(const char *str) {
     this->printf("%s\r\n", str);
 }
 
+void JTAGService::printBytes(char *buff, size_t length) {
+    this->print("[");
+    for (int i = 0; i < length; i++) {
+        this->printf("%.2x", buff[i]);
+        if (i == length - 1) {
+            break;
+        }
+        this->print(" ");
+    }
+    this->println("]");
+}
+
 void JTAGService::waitFor(const char *str) {
     int index = 0;
     size_t strLength = strlen(str);
     while (true) {
-        int readBytes = usb_serial_jtag_read_bytes(this->readBuffer, (JTAG_READ_BUFFER_SIZE - 1),
+        size_t maxBytesToRead = strLength - index;
+        if (maxBytesToRead > JTAG_READ_BUFFER_SIZE) {
+            maxBytesToRead = JTAG_READ_BUFFER_SIZE;
+        }
+
+        int readBytes = usb_serial_jtag_read_bytes(this->readBuffer, maxBytesToRead,
                                                    20 / portTICK_PERIOD_MS);
         if (!readBytes) {
             continue;
@@ -63,7 +80,7 @@ void JTAGService::waitFor(const char *str) {
 void JTAGService::readBytes(char *buff, size_t length) {
     int index = 0;
     while (true) {
-        int readBytes = usb_serial_jtag_read_bytes(this->readBuffer, (JTAG_READ_BUFFER_SIZE - 1),
+        int readBytes = usb_serial_jtag_read_bytes(this->readBuffer, (JTAG_READ_BUFFER_SIZE),
                                                    20 / portTICK_PERIOD_MS);
         if (!readBytes) {
             continue;
@@ -81,7 +98,6 @@ void JTAGService::readBytes(char *buff, size_t length) {
                 return;
             }
         }
-
     }
 }
 

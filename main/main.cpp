@@ -26,5 +26,6 @@ extern "C" void app_main(void) {
         jtagService.waitFor("AT+RGB=");
         jtagService.readBytes(ledService.getRgbBuffer(), ledService.getRgbBufferSize());
         ledService.refresh();
+        jtagService.println("OK");
     }
 }

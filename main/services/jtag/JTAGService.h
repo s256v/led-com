@@ -14,13 +14,14 @@ public:
     void println(const char *str);
     void print(const char *str);
     void printf(const char *format, ...);
+    void printBytes(char *buff, size_t length);
 
     void waitFor(const char *str);
 
     void readBytes(char *buff, size_t length);
 
 private:
-    char readBuffer[JTAG_READ_BUFFER_SIZE + 1];
+    char readBuffer[JTAG_READ_BUFFER_SIZE];
 };
 
 
