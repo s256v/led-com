@@ -10,11 +10,10 @@
 
 #define RMT_LED_STRIP_RESOLUTION_HZ 10000000 // 10MHz resolution, 1 tick = 0.1us (led strip needs a high resolution)
 #define RMT_LED_STRIP_GPIO_NUM      GPIO_NUM_10
-#define LED_COUNT         16
 
 class LedService {
 public:
-    void init();
+    void init(uint16_t ledCount);
     void splash();
     char* getRgbBuffer();
     size_t getRgbBufferSize();
@@ -24,6 +23,7 @@ private:
     rmt_encoder_handle_t led_encoder = nullptr;
     rmt_transmit_config_t tx_config;
     char* led_strip_pixels;
+    uint16_t ledCount;
 };
 
 

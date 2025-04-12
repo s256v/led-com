@@ -11,7 +11,9 @@
 
 static const char *CLASS_TAG = "LedService";
 
-void LedService::init() {
+void LedService::init(uint16_t ledCountParam) {
+    this->ledCount = ledCountParam;
+
     ESP_LOGI(CLASS_TAG, "Create RMT TX channel");
     rmt_tx_channel_config_t tx_chan_config = {
             .gpio_num = RMT_LED_STRIP_GPIO_NUM,
@@ -36,7 +38,7 @@ void LedService::init() {
     this->tx_config = {
             .loop_count = 0, // no transfer loop
     };
-    this->led_strip_pixels = static_cast<char *>(malloc(LED_COUNT * 3));
+    this->led_strip_pixels = static_cast<char *>(malloc(this->ledCount * 3));
 }
 
 void LedService::splash() {
@@ -53,9 +55,9 @@ void LedService::splash() {
     this->refresh();
 
     for (int v = 5; v <= 100; v += 30) {
-        for (int i = 0; i < LED_COUNT * 3; i += 3) {
+        for (int i = 0; i < this->ledCount * 3; i += 3) {
             // Build RGB pixels
-            hue = (i / 3) * 360 / LED_COUNT;
+            hue = (i / 3) * 360 / this->ledCount;
 
             ColorUtils::hsv2rgb(hue, 100, 100 - v, &red, &green, &blue);
 
@@ -73,7 +75,7 @@ char *LedService::getRgbBuffer() {
 }
 
 size_t LedService::getRgbBufferSize() {
-    return LED_COUNT * 3;
+    return this->ledCount * 3;
 }
 
 void LedService::refresh() {
