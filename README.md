@@ -9,7 +9,7 @@ as a LED strip data pin GPIO_10 is used, you can change it in the [LedService.h]
 
 ## AT Commands
 
-Set LED strip length. Could be sent only once ofter power on.
+Set LED strip length. Could be sent only once after power on.
 ```
 AT+LN=...uint16 2 bytes little endian...
 ```
